@@ -10,17 +10,7 @@ const Navbar = () => {
         </div>
 
         {/* Navigation Items */}
-        <ul className="hidden md:flex space-x-8 text-[#ebebd3] font-medium">
-          <li className="hover:text-[#56b2bb] transition duration-300 cursor-pointer">
-            Home
-          </li>
-          <li className="hover:text-[#56b2bb] transition duration-300 cursor-pointer">
-            Jobs
-          </li>
-          <li className="hover:text-[#56b2bb] transition duration-300 cursor-pointer">
-            About
-          </li>
-        </ul>
+       
 
         {/* Mobile Menu Icon */}
         <div className="md:hidden text-[#ebebd3]">

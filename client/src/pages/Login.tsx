@@ -1,7 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useAuthContext } from "../context/AuthProvider";
 
 const Login = () => {
+  const { auth, setAuth } = useAuthContext();
+
+  useEffect(() => {
+    console.log(auth);
+  });
   return (
     <div className="h-lvh w-96 sm:w-3/4 mt-2 mx-auto flex justify-center p-3 pt-20">
       <div className="md:w-3/5 w-96 max-h-[380px]  border-2 rounded-lg shadow border-gray-200 p-5">
@@ -36,7 +42,12 @@ const Login = () => {
           <p>
             Dont have an account?{" "}
             <span>
-              <Link to={"/register"} className="!text-[#051c34] link font-semibold">Register</Link>
+              <Link
+                to={"/register"}
+                className="!text-[#051c34] link font-semibold"
+              >
+                Register
+              </Link>
             </span>
           </p>
         </div>

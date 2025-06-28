@@ -7,11 +7,21 @@ const Navbar = () => {
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
         {/* Logo / Brand */}
         <div className="text-[#ebebd3] text-2xl md:text-3xl font-bold tracking-wide">
-          <Link to={'/'} className="!text-[#ebebd3]">KareraMo</Link>
+          <Link to={"/"} className="!text-[#ebebd3]">
+            KareraMo
+          </Link>
         </div>
 
         {/* Navigation Items */}
-       
+        <div className="flex gap-x-5">
+          <Link
+            to={"/login"}
+            className="btn btn-neutral !text-[#ebebd3]"
+            data-theme="winter"
+          >
+            Sign in
+          </Link>
+        </div>
 
         {/* Mobile Menu Icon */}
         <div className="md:hidden text-[#ebebd3]">

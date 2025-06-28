@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   return (
@@ -6,7 +7,7 @@ const Navbar = () => {
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
         {/* Logo / Brand */}
         <div className="text-[#ebebd3] text-2xl md:text-3xl font-bold tracking-wide">
-          KareraMo
+          <Link to={'/'} className="!text-[#ebebd3]">KareraMo</Link>
         </div>
 
         {/* Navigation Items */}

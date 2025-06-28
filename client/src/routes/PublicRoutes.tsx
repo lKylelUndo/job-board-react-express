@@ -23,7 +23,7 @@ const PublicRoutes = () => {
       </div>
     );
 
-  return !auth?.isAuthenticated ? <Outlet /> : null;
+  return !auth?.isAuthenticated ? <Outlet/> : null;
 };
 
 export default PublicRoutes;

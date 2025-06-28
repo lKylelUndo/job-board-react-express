@@ -51,8 +51,12 @@ const Register = () => {
   };
 
   return (
-    <div className="h-lvh w-96 sm:w-3/4 mt-2 mx-auto flex justify-center p-3 pt-11">
-      <div className="md:w-3/5 w-96 max-h-[630px] border-2 rounded-lg shadow border-gray-200 p-5">
+    <div className="h-auto w-96 sm:w-3/4 mt-2 mx-auto flex justify-center p-3 pt-11">
+      <div
+        className={`md:w-3/5 w-96 max-h-[575px] ${
+          Object.keys(errors).length > 0 && "max-h-[660px]"
+        } border-2 rounded-lg shadow border-gray-200 p-5`}
+      >
         <h1 className="text-3xl font-bold">Sign Up</h1>
         <form onSubmit={handleRegister}>
           <div className="flex flex-col my-6">

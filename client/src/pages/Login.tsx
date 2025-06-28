@@ -1,36 +1,101 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState, type ChangeEvent } from "react";
 import { Link } from "react-router-dom";
 import { useAuthContext } from "../context/AuthProvider";
 
+type ErrorMap = {
+  path: string;
+  msg: string;
+};
+
 const Login = () => {
   const { auth, setAuth } = useAuthContext();
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   useEffect(() => {
     console.log(auth);
   });
+
+  const handleFormChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
+    try {
+      setFormData({
+        ...formData,
+        [target.name]: target.value,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      console.log(formData);
+      const response = await fetch("http://localhost:3000/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify(formData),
+      });
+
+      const responseData = await response.json();
+      console.log(responseData);
+
+      if (response.ok) {
+        console.log(`Loggedin`);
+      } else {
+        const errorsObj: Record<string, string> = {};
+        responseData.errors.forEach((error: ErrorMap) => {
+          errorsObj[error.path] = error.msg;
+        });
+        setErrors(errorsObj);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="h-lvh w-96 sm:w-3/4 mt-2 mx-auto flex justify-center p-3 pt-20">
-      <div className="md:w-3/5 w-96 max-h-[380px]  border-2 rounded-lg shadow border-gray-200 p-5">
+      <div
+        className={`md:w-3/5 w-96 max-h-[380px] ${
+          Object.keys(errors).length > 0 && "min-h-[420px]"
+        }  border-2 rounded-lg shadow border-gray-200 p-5`}
+      >
         <h1 className="text-3xl font-bold">Sign In</h1>
-        <form>
+        <form onSubmit={handleLogin}>
           <div className="flex flex-col my-6">
             <label htmlFor="email">Email Address</label>
             <input
               type="email"
+              value={formData.email}
+              onChange={handleFormChange}
               id="email"
               name="email"
               className="border border-gray-300 rounded p-3 focus:outline"
             />
+            {errors.email && <p className="!text-red-700">{errors.email}</p>}
           </div>
 
           <div className="flex flex-col mt-6">
             <label htmlFor="password">Password</label>
             <input
+              value={formData.password}
+              onChange={handleFormChange}
               type="password"
               id="password"
               name="password"
               className="border border-gray-300 rounded p-3 focus:outline"
             />
+            {errors.password && (
+              <p className="!text-red-700">{errors.password}</p>
+            )}
           </div>
           <div className="mt-3">
             <button className="bg-[#083d77] text-white p-2 w-full rounded hover:opacity-60 transition">

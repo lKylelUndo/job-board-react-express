@@ -6,6 +6,7 @@ type AuthContextType = {
 };
 
 type AuthType = {
+  userId: number | null;
   username: string;
   isAdmin: boolean;
 };
@@ -13,7 +14,11 @@ type AuthType = {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [auth, setAuth] = useState<AuthType>({username: "", isAdmin: false});
+  const [auth, setAuth] = useState<AuthType>({
+    userId: null,
+    username: "",
+    isAdmin: false,
+  });
   return (
     <AuthContext.Provider value={{ auth, setAuth }}>
       {children}

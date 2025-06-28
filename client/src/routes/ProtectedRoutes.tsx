@@ -7,7 +7,13 @@ const ProtectedRoutes = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!auth?.isAuthenticated && !loading) {
+    if (auth?.isAuthenticated && !loading) {
+      if (auth.isAdmin) {
+        navigate("/dashboard")
+      } else {
+        navigate("/user-page")
+      }
+    } else if (!auth?.isAuthenticated && !loading) {
       navigate("/login");
     }
   }, [auth, loading]);

@@ -4,6 +4,7 @@ import { callVerify } from "../services/AuthServices";
 type AuthContextType = {
   auth: AuthType | undefined;
   setAuth: React.Dispatch<React.SetStateAction<any>>;
+  loading: boolean;
 };
 
 type AuthType = {
@@ -28,7 +29,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const verifyUser = async () => {
       const result = await callVerify();
       if (result?.response.ok) {
-        const { id, username, isAdmin } = result.responseData;
+        console.log(result.responseData);
+        const { id, username, isAdmin } = result.responseData.user;
         setAuth({
           userId: id,
           username,
@@ -44,15 +46,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           isAuthenticated: false,
         });
       }
+
+      setLoading(false);
     };
 
     verifyUser();
   }, []);
 
-  if (loading) return <div>Loading...</div>;
-
   return (
-    <AuthContext.Provider value={{ auth, setAuth }}>
+    <AuthContext.Provider value={{ auth, setAuth, loading }}>
       {children}
     </AuthContext.Provider>
   );

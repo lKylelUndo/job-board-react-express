@@ -1,9 +1,13 @@
-import React from 'react'
+import React, { useEffect } from "react";
+import { useAuthContext } from "../context/AuthProvider";
 
 const UserPage = () => {
-  return (
-    <div>UserPage</div>
-  )
-}
+  const { auth } = useAuthContext();
 
-export default UserPage
+  useEffect(() => {
+    console.log(auth);
+  }, []);
+  return <div>{auth?.username}</div>;
+};
+
+export default UserPage;

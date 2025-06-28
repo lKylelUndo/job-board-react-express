@@ -9,7 +9,7 @@ type ErrorMap = {
 };
 
 const Login = () => {
-  const { auth, setAuth } = useAuthContext();
+  const { auth, setAuth, loading } = useAuthContext();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -52,15 +52,23 @@ const Login = () => {
           throw new Error("Failed to verify. Please try again.");
         }
 
-        const { responseData } = result;
-        setAuth({
-          userId: responseData.user.id,
-          username: responseData.user.username,
-          isAdmin: responseData.user.isAdmin,
-          isAuthenticated: true,
-        });
+        const { user } = result.responseData;
+        console.log(user);
 
-        navigate("/user-page");
+        const newAuthUser = {
+          userId: user.id,
+          username: user.username,
+          isAdmin: user.isAdmin,
+          isAuthenticated: true,
+        };
+        
+        setAuth(newAuthUser);
+
+        if (newAuthUser.isAdmin) {
+          navigate("/dashboard");
+        } else {
+          navigate("/user-page");
+        }
       } else {
         const errorsObj: Record<string, string> = {};
         responseData.errors.forEach((error: ErrorMap) => {
@@ -72,6 +80,13 @@ const Login = () => {
       console.log(error);
     }
   };
+
+  if (loading)
+    return (
+      <div className="h-lvh flex justify-center mt-50">
+        <span className="loading loading-spinner w-32 h-32 text-blue-600"></span>
+      </div>
+    );
 
   return (
     <div className="h-lvh w-96 sm:w-3/4 mt-2 mx-auto flex justify-center p-3 pt-20">

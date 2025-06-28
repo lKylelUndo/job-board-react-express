@@ -7,6 +7,7 @@ import Dashboard from "./pages/Dashboard";
 import Jobs from "./pages/Jobs";
 import UserPage from "./pages/UserPage";
 import ProtectedRoutes from "./routes/ProtectedRoutes";
+import PublicRoutes from "./routes/PublicRoutes";
 
 function App() {
   return (
@@ -14,8 +15,10 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        <Route element={<PublicRoutes />}>
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
+        </Route>
 
         <Route path="/jobs" element={<Jobs />} />
 

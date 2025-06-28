@@ -1,6 +1,7 @@
 import React, { useEffect, useState, type ChangeEvent } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuthContext } from "../context/AuthProvider";
+import { callLogin, callVerify } from "../services/AuthServices";
 
 type ErrorMap = {
   path: string;
@@ -14,11 +15,13 @@ const Login = () => {
     password: "",
   });
 
+  const navigate = useNavigate();
+
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   useEffect(() => {
     console.log(auth);
-  });
+  }, [auth]);
 
   const handleFormChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
     try {
@@ -34,21 +37,30 @@ const Login = () => {
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      console.log(formData);
-      const response = await fetch("http://localhost:3000/api/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify(formData),
-      });
+      const result = await callLogin(formData);
 
-      const responseData = await response.json();
-      console.log(responseData);
+      if (!result) {
+        throw new Error("Failed to connect. Please try again.");
+      }
+
+      const { response, responseData } = result;
 
       if (response.ok) {
         console.log(`Loggedin`);
+        const result = await callVerify();
+        if (!result) {
+          throw new Error("Failed to verify. Please try again.");
+        }
+
+        const { responseData } = result;
+        setAuth({
+          userId: responseData.user.id,
+          username: responseData.user.username,
+          isAdmin: responseData.user.isAdmin,
+          isAuthenticated: true,
+        });
+
+        navigate("/user-page");
       } else {
         const errorsObj: Record<string, string> = {};
         responseData.errors.forEach((error: ErrorMap) => {
@@ -78,7 +90,7 @@ const Login = () => {
               onChange={handleFormChange}
               id="email"
               name="email"
-              className="border border-gray-300 rounded p-3 focus:outline"
+              className="border border-gray-300 rounded p-3 focus:outline text-[#051c34]"
             />
             {errors.email && <p className="!text-red-700">{errors.email}</p>}
           </div>
@@ -91,7 +103,7 @@ const Login = () => {
               type="password"
               id="password"
               name="password"
-              className="border border-gray-300 rounded p-3 focus:outline"
+              className="border border-gray-300 rounded p-3 focus:outline text-[#051c34]"
             />
             {errors.password && (
               <p className="!text-red-700">{errors.password}</p>

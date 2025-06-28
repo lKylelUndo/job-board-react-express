@@ -20,9 +20,11 @@ app.use(cors(corsOption));
 // Routes
 app.use("/api", routes);
 
-app.get("/verify", verifyToken, (req, res) => {
+app.get("/api/verify", verifyToken, (req, res) => {
   console.table(req.currentUser);
-  return res.send({ token: req.cookies.token });
+  return res
+    .status(200)
+    .json({ token: req.cookies.token, user: req.currentUser });
 });
 
 // Port

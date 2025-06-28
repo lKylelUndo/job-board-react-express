@@ -5,6 +5,8 @@ import Home from "./pages/Home";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import Jobs from "./pages/Jobs";
+import UserPage from "./pages/UserPage";
+import ProtectedRoutes from "./routes/ProtectedRoutes";
 
 function App() {
   return (
@@ -17,11 +19,13 @@ function App() {
 
         <Route path="/jobs" element={<Jobs />} />
 
-        {/* Admin route */}
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route element={<ProtectedRoutes />}>
+          {/* Admin route */}
+          <Route path="/dashboard" element={<Dashboard />} />
 
-        {/* User Route */}
-        <Route path="/homepage" element={<h1>Test</h1>} />
+          {/* User Route */}
+          <Route path="/user-page" element={<UserPage />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );

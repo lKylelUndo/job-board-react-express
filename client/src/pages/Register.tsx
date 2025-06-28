@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { callRegister } from "../services/AuthServices";
 
 const Register = () => {
   const [username, setUsername] = useState<string>("");
@@ -21,17 +22,13 @@ const Register = () => {
         confirmPassword,
       };
 
-      const response = await fetch("http://localhost:3000/api/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify(formData),
-      });
+      const result = await callRegister(formData);
+      if (!result) {
+        alert("Failed to connect. Please try again.");
+        return;
+      }
 
-      const responseData = await response.json();
-      console.log(responseData);
+      const { response, responseData } = result;
 
       if (response.ok) {
         navigate("/login");

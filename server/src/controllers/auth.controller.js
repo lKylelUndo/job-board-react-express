@@ -31,7 +31,6 @@ export const loginUser = async (req, res) => {
       secure: false,
       SameSite: "None",
     });
-
     
     return res.status(200).json({ message: "success", user });
   } catch (error) {

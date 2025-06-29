@@ -8,6 +8,7 @@ import Jobs from "./pages/Jobs";
 import UserPage from "./pages/UserPage";
 import ProtectedRoutes from "./routes/ProtectedRoutes";
 import PublicRoutes from "./routes/PublicRoutes";
+import UserProfile from "./pages/UserProfile";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
 
           {/* User Route */}
           <Route path="/user-page" element={<UserPage />} />
+          <Route path="/profile/me" element={<UserProfile />} />
         </Route>
       </Routes>
     </BrowserRouter>

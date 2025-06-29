@@ -7,7 +7,11 @@ const UserPage = () => {
   useEffect(() => {
     console.log(auth);
   }, []);
-  return <div>{auth?.username}</div>;
+  return (
+    <div>
+      
+    </div>
+  );
 };
 
 export default UserPage;

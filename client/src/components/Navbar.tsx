@@ -1,27 +1,78 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuthContext } from "../context/AuthProvider";
+import { callLogout } from "../services/AuthServices";
 
 const Navbar = () => {
+  const { auth, setAuth } = useAuthContext();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      const result = await callLogout();
+      if (!result) {
+        throw new Error("Failed to logout");
+      }
+
+      const { response, responseData } = result;
+      console.log(responseData);
+      if (response.ok) {
+        setAuth(null);
+        navigate("/");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <header className="bg-[#0A0F22] shadow-lg">
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
         {/* Logo / Brand */}
-        <div className="text-[#ebebd3] text-2xl md:text-3xl font-bold tracking-wide">
+        <div className="text-[#ebebd3] text-2xl md:text-3xl font-bold tracking-wide  flex items-center gap-x-5">
           <Link to={"/"} className="!text-[#ebebd3]">
             KareraMo
           </Link>
+
+          {auth && (
+            <>
+              <div className="flex !text-xs !font-semibold">
+                <Link to={"/job-search"} className="hover:border-b-2">
+                  Job search
+                </Link>
+              </div>
+
+              <div className="flex !text-xs !font-semibold">
+                <Link to={"/profile/me"} className="hover:border-b-2">
+                  Profile
+                </Link>
+              </div>
+            </>
+          )}
         </div>
 
         {/* Navigation Items */}
-        <div className="flex gap-x-5">
-          <Link
-            to={"/login"}
-            className="btn btn-neutral !text-[#ebebd3]"
-            data-theme="winter"
-          >
-            Sign in
-          </Link>
-        </div>
+        {auth?.isAuthenticated ? (
+          <div className="flex gap-x-5">
+            <button
+              onClick={handleLogout}
+              className="btn btn-neutral !text-[#ebebd3]"
+              data-theme="winter"
+            >
+              Sign out
+            </button>
+          </div>
+        ) : (
+          <div className="flex gap-x-5">
+            <Link
+              to={"/login"}
+              className="btn btn-neutral !text-[#ebebd3]"
+              data-theme="winter"
+            >
+              Sign in
+            </Link>
+          </div>
+        )}
 
         {/* Mobile Menu Icon */}
         <div className="md:hidden text-[#ebebd3]">

@@ -65,3 +65,21 @@ export const callVerify = async (): Promise<{
     return null;
   }
 };
+
+export const callLogout = async (): Promise<{
+  response: Response;
+  responseData: any;
+} | null> => {
+  try {
+    const response = await fetch("http://localhost:3000/api/logout", {
+      method: "POST",
+      credentials: "include",
+    });
+    const responseData = await response.json();
+
+    return { response, responseData };
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};

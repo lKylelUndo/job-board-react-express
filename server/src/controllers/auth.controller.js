@@ -31,7 +31,7 @@ export const loginUser = async (req, res) => {
       secure: false,
       SameSite: "None",
     });
-    
+
     return res.status(200).json({ message: "success", user });
   } catch (error) {
     console.log(error);
@@ -56,6 +56,21 @@ export const registerUser = async (req, res) => {
     return res
       .status(200)
       .json({ message: "Registered Successufully", newRegistered });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error });
+  }
+};
+
+export const logoutUser = async (req, res) => {
+  try {
+    res.clearCookie("token", {
+      httpOnly: true,
+      SameSite: "None",
+      secure: false,
+    });
+
+    res.status(200).json({ message: "Logout succesfully." });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ error });

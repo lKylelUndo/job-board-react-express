@@ -37,7 +37,7 @@ const Navbar = () => {
           {auth && (
             <>
               <div className="flex !text-xs !font-semibold">
-                <Link to={"/job-search"} className="hover:border-b-2">
+                <Link to={"/jobs"} className="hover:border-b-2">
                   Job search
                 </Link>
               </div>

@@ -2,6 +2,7 @@ import React, { useEffect, useState, type ChangeEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthContext } from "../context/AuthProvider";
 import { callLogin, callVerify } from "../services/AuthServices";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 type ErrorMap = {
   path: string;
@@ -61,7 +62,7 @@ const Login = () => {
           isAdmin: user.isAdmin,
           isAuthenticated: true,
         };
-        
+
         setAuth(newAuthUser);
 
         if (newAuthUser.isAdmin) {
@@ -81,12 +82,7 @@ const Login = () => {
     }
   };
 
-  if (loading)
-    return (
-      <div className="h-lvh flex justify-center mt-50">
-        <span className="loading loading-spinner w-32 h-32 text-blue-600"></span>
-      </div>
-    );
+  if (loading) return <LoadingSpinner />;
 
   return (
     <div className="h-lvh w-96 sm:w-3/4 mt-2 mx-auto flex justify-center p-3 pt-20">

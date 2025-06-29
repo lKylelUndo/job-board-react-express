@@ -1,6 +1,18 @@
 import { validationResult, matchedData } from "express-validator";
 import { Job } from "../models/Job.js";
 
+export const getAllJobs = async (req, res) => {
+  try {
+    const jobs = await Job.findAll();
+    if (!jobs) return res.status(401).json({ message: "No jobs at the moment" });
+
+    return res.status(200).json({ jobs });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error });
+  }
+};
+
 export const viewJob = async (req, res) => {
   try {
     const { id } = req.params;

@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
   addJob,
   deleteJob,
+  getAllJobs,
   updateJob,
   viewJob,
 } from "../controllers/job.controller.js";
@@ -14,6 +15,7 @@ import {
 const router = Router();
 
 router.get("/view-job/:id", viewJob);
+router.get("/get-all-jobs", getAllJobs);
 router.post("/add-job", jobCreationRules, addJob);
 router.put("/update-job/:id", updateJob);
 router.put("/update-job", (req, res) => {

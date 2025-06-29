@@ -8,8 +8,8 @@ const UserPage = () => {
     console.log(auth);
   }, []);
   return (
-    <div>
-      
+    <div className="border p-3 md:w- mx-auto">
+
     </div>
   );
 };

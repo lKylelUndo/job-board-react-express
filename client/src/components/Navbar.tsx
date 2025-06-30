@@ -34,7 +34,7 @@ const Navbar = () => {
             KareraMo
           </Link>
 
-          {auth && (
+          {auth?.isAuthenticated && (
             <>
               <div className="flex !text-xs !font-semibold">
                 <Link to={"/jobs"} className="hover:border-b-2">

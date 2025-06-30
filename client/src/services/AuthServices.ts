@@ -1,7 +1,11 @@
-export const callLogin = async (formData: {
+type LoginTypes = {
   email: string;
   password: string;
-}): Promise<{ response: Response; responseData: any } | null> => {
+};
+
+export const callLogin = async (
+  formData: LoginTypes
+): Promise<{ response: Response; responseData: any } | null> => {
   try {
     const response = await fetch("http://localhost:3000/api/login", {
       method: "POST",

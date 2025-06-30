@@ -13,11 +13,13 @@ type ModalEditProfileTypes = {
   handleInputChange: (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;
+  handleProfile: (e: React.FormEvent) => void;
 };
 
 const ModalEditProfile = ({
   formData,
   handleInputChange,
+  handleProfile,
 }: ModalEditProfileTypes) => {
   return (
     <dialog id="edit-profile-form" className="modal">
@@ -96,8 +98,10 @@ const ModalEditProfile = ({
         </div>
 
         <div className="modal-action mt-6">
-          <form method="dialog">
-            <button className="btn btn-primary">Save</button>
+          <form method="dialog" onSubmit={handleProfile}>
+            <button type="submit" className="btn btn-primary">
+              Save
+            </button>
           </form>
         </div>
       </div>

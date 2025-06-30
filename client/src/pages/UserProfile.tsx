@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import ModalEditProfile from "../components/ModalEditProfile";
+import { useAuthContext } from "../context/AuthProvider";
 
 type UserProfileTypes = {
   username: string;
@@ -10,6 +11,7 @@ type UserProfileTypes = {
 };
 
 const UserProfile = () => {
+  const { auth } = useAuthContext();
   const [formData, setFormData] = useState<UserProfileTypes>({
     username: "John Doe",
     location: "New York, NY",
@@ -28,16 +30,30 @@ const UserProfile = () => {
     }));
   };
 
+  const handleProfile = (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      console.log(formData);
+      
+    } catch (error) {
+      console.log(error)
+    }
+  };
+
   return (
     <div className="max-w-5xl mx-auto mt-16 p-8 bg-white border border-gray-200 rounded-lg shadow-sm">
       {/* Modal for Editing */}
 
-      <ModalEditProfile formData={formData} handleInputChange={handleInputChange} />
+      <ModalEditProfile
+        formData={formData}
+        handleInputChange={handleInputChange}
+        handleProfile={handleProfile}
+      />
 
       {/* Profile Display */}
       <div className="flex flex-col md:flex-row items-center md:items-start gap-6 mb-8">
         <img
-          src="https://via.placeholder.com/120"
+          src="https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQW_Blev_Wjbtx6Dx2qKFjKYczgoVzoNyWF7nq-psniSSIOsN9DqPqKziBwtp0pdD2NFdCLG45ST4qA6P6885002upZNq8KQG_7lIXSJA"
           alt="Profile"
           className="w-32 h-32 rounded-full object-cover border"
         />

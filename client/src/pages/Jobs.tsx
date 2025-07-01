@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import JobCard from "../components/JobCard";
 import LoadingSpinner from "../components/LoadingSpinner";
+import { useAuthContext } from "../context/AuthProvider";
+import { Link } from "react-router-dom";
 
 export type Job = {
   id: number;
@@ -13,6 +15,7 @@ export type Job = {
 };
 
 const Jobs = () => {
+  const { auth } = useAuthContext();
   const [jobs, setJobs] = useState<Job[] | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -43,6 +46,13 @@ const Jobs = () => {
       <h1 className="text-3xl md:text-4xl font-bold mb-10 text-center">
         Latest Job Posted
       </h1>
+      {auth?.isAuthenticated && !auth?.isAdmin && (
+        <div className="my-3">
+          <Link to={"/view-applied-jobs"} className="text-center my-3 hover:underline font-semibold">
+            View Applied Jobs
+          </Link>
+        </div>
+      )}
 
       <div className="flex flex-col md:flex-row gap-8">
         <JobCard jobs={jobs} />

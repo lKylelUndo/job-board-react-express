@@ -8,7 +8,12 @@ const ProtectedRoutes = () => {
   const location = useLocation();
 
   const adminRoutes: string[] = ["/dashboard", "/admin-settings"];
-  const userRoutes: string[] = ["/user-page", "/profile/me", "/jobs"];
+  const userRoutes: string[] = [
+    "/user-page",
+    "/profile/me",
+    "/jobs",
+    "/view-applied-jobs",
+  ];
 
   useEffect(() => {
     if (!loading) {

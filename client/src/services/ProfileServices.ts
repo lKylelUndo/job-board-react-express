@@ -11,7 +11,7 @@ type ProfileTypes = {
 
 export const ManageProfile = async (
   profileData: ProfileTypes,
-  isEdit: boolean // 👈 Add a flag to indicate add or edit
+  isEdit: boolean 
 ): Promise<{ response: Response; responseData: any } | null> => {
   try {
     const endpoint = isEdit
@@ -21,7 +21,7 @@ export const ManageProfile = async (
     const method = isEdit ? "PUT" : "POST";
 
     const response = await fetch(endpoint, {
-      method, // or PATCH if your backend expects PATCH for edits
+      method, 
       headers: {
         "Content-Type": "application/json",
       },

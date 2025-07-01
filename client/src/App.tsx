@@ -9,6 +9,7 @@ import UserPage from "./pages/UserPage";
 import ProtectedRoutes from "./routes/ProtectedRoutes";
 import PublicRoutes from "./routes/PublicRoutes";
 import UserProfile from "./pages/UserProfile";
+import ViewAppliedJobs from "./pages/ViewAppliedJobs";
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
           {/* User Route */}
           <Route path="/user-page" element={<UserPage />} />
           <Route path="/profile/me" element={<UserProfile />} />
+          <Route path="/view-applied-jobs" element={<ViewAppliedJobs />} />
         </Route>
 
         <Route path="*" element={<h1>Not found</h1>} />

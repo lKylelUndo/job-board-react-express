@@ -1,4 +1,4 @@
-import {db} from "../config/Database.js";
+import { db } from "../config/Database.js";
 import { DataTypes } from "sequelize";
 
 const sequelize = db.getSequelizeInstance();
@@ -6,6 +6,11 @@ const sequelize = db.getSequelizeInstance();
 export const Application = sequelize.define(
   "Application",
   {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
     userId: {
       type: DataTypes.INTEGER,
       allowNull: false,

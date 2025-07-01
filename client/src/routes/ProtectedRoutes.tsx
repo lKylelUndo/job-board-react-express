@@ -7,18 +7,21 @@ const ProtectedRoutes = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const adminRoutes: string[] = ["/dashboard", "/admin-settings"];
+  const userRoutes: string[] = ["/user-page", "/profile/me", "/jobs"];
+
   useEffect(() => {
     if (!loading) {
       if (!auth?.isAuthenticated) {
         navigate("/login");
-      } else if (
-        location.pathname === "/dashboard" ||
-        location.pathname === "/user-page"
-      ) {
-        
-        if (auth.isAdmin && location.pathname !== "/dashboard") {
+      } else {
+        // Redirect based on role
+
+        const path = location.pathname;
+
+        if (auth.isAdmin && !adminRoutes.includes(path)) {
           navigate("/dashboard");
-        } else if (!auth.isAdmin && location.pathname !== "/user-page") {
+        } else if (!auth.isAdmin && !userRoutes.includes(path)) {
           navigate("/user-page");
         }
       }

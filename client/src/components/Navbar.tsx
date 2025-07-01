@@ -34,6 +34,15 @@ const Navbar = () => {
             KareraMo
           </Link>
 
+          {auth?.isAdmin && (
+            <div className="flex !text-xs !font-semibold">
+              {/* Admin-only links */}
+              <Link to="/dashboard" className="hover:border-b-2">
+                Dashboard
+              </Link>
+            </div>
+          )}
+
           {auth?.isAuthenticated && (
             <>
               <div className="flex !text-xs !font-semibold">
@@ -42,11 +51,15 @@ const Navbar = () => {
                 </Link>
               </div>
 
-              <div className="flex !text-xs !font-semibold">
-                <Link to={"/profile/me"} className="hover:border-b-2">
-                  Profile
-                </Link>
-              </div>
+              {!auth?.isAdmin && (
+                <div className="flex !text-xs !font-semibold">
+                  <div className="flex !text-xs !font-semibold">
+                    <Link to={"/profile/me"} className="hover:border-b-2">
+                      Profile
+                    </Link>
+                  </div>
+                </div>
+              )}
             </>
           )}
         </div>

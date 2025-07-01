@@ -31,6 +31,8 @@ function App() {
           <Route path="/user-page" element={<UserPage />} />
           <Route path="/profile/me" element={<UserProfile />} />
         </Route>
+
+        <Route path="*" element={<h1>Not found</h1>} />
       </Routes>
     </BrowserRouter>
   );

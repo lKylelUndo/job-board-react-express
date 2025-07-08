@@ -7,7 +7,13 @@ const ProtectedRoutes = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const adminRoutes: string[] = ["/dashboard", "/admin-settings"];
+  const adminRoutes: string[] = [
+    "/dashboard",
+    "/admin-settings",
+    "/employeers-page",
+    "/candidates-page",
+    "/employeers-application-page",
+  ];
   const userRoutes: string[] = [
     "/user-page",
     "/profile/me",

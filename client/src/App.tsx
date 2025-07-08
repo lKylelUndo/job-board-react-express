@@ -12,6 +12,9 @@ import UserProfile from "./pages/UserProfile";
 import ViewAppliedJobs from "./pages/ViewAppliedJobs";
 import ApplyEmployer from "./pages/ApplyEmployer";
 import PostJob from "./pages/PostJob";
+import EmployeerPage from "./pages/EmployeerPage";
+import CandidatePage from "./pages/CandidatePage";
+import EmployeerApplicationPage from "./pages/EmployeerApplicationPage";
 
 function App() {
   return (
@@ -29,11 +32,18 @@ function App() {
         <Route element={<ProtectedRoutes />}>
           {/* Admin route */}
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/employeers-page" element={<EmployeerPage />} />
+          <Route path="/candidates-page" element={<CandidatePage />} />
+          <Route
+            path="/employeers-application-page"
+            element={<EmployeerApplicationPage />}
+          />
 
-          {/* User Route */}
+          {/* Candidate Route */}
           <Route path="/user-page" element={<UserPage />} />
           <Route path="/profile/me" element={<UserProfile />} />
           <Route path="/view-applied-jobs" element={<ViewAppliedJobs />} />
+          {/* Employeer Route */}
           <Route path="/apply-employer" element={<ApplyEmployer />} />
           <Route path="/post-job" element={<PostJob />} />
         </Route>

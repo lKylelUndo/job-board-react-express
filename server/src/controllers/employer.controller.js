@@ -1,23 +1,60 @@
 import { Employeer } from "../models/Employeer.js";
 
+export const fetchPendingEmployeer = async (req, res) => {
+  try {
+    const employeers = await Employeer.findAll({
+      where: { isRegistered: false },
+    });
+
+    if (!employeers)
+      return res
+        .status(400)
+        .json({ message: "No registered employeers at the moment" });
+
+    console.log("Pending Employers:", employeers);
+
+    return res.status(200).json({ employeers });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error });
+  }
+};
+
+export const fetchRegisteredEmployeer = async (req, res) => {
+  try {
+    const employeers = await Employeer.findAll({
+      where: { isRegistered: true },
+    });
+
+    if (!employeers)
+      return res
+        .status(400)
+        .json({ message: "No registered employeers at the moment" });
+
+    return res.status(200).json({ employeers });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error });
+  }
+};
+
 export const applyEmployer = async (req, res) => {
   try {
     const data = req.body;
+    console.table(data);
 
-    const existingUser = await Employeer.findOne({
+    const existingApplication = await Employeer.findOne({
       where: { userId: data.userId },
     });
-    if (existingUser)
-      return res.status(400).json({ message: "Employer already registered." });
+    if (existingApplication)
+      return res.status(400).json({ message: "Employer already submitted." });
 
-    data.isRegistered = true;
-
-    console.table(data);
+    // data.isRegistered = true;
 
     const result = await Employeer.create(data);
     console.log(result);
 
-    return res.status(201).json({ message: "Success Register", result });
+    return res.status(201).json({ message: "Submitted", result });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ error });

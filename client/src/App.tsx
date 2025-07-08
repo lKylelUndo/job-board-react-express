@@ -11,6 +11,7 @@ import PublicRoutes from "./routes/PublicRoutes";
 import UserProfile from "./pages/UserProfile";
 import ViewAppliedJobs from "./pages/ViewAppliedJobs";
 import ApplyEmployer from "./pages/ApplyEmployer";
+import PostJob from "./pages/PostJob";
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
           <Route path="/profile/me" element={<UserProfile />} />
           <Route path="/view-applied-jobs" element={<ViewAppliedJobs />} />
           <Route path="/apply-employer" element={<ApplyEmployer />} />
+          <Route path="/post-job" element={<PostJob />} />
         </Route>
 
         <Route path="*" element={<h1>Not found</h1>} />

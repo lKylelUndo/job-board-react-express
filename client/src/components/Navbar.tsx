@@ -37,7 +37,7 @@ const Navbar = () => {
           {auth?.isAdmin && (
             <div className="flex !text-xs !font-semibold">
               {/* Admin-only links */}
-              <Link to="/dashboard" className="hover:border-b-1">
+              <Link to="/dashboard" className="hover:border-b-1 btn">
                 Dashboard
               </Link>
             </div>
@@ -62,6 +62,12 @@ const Navbar = () => {
                    <div className="flex !text-xs !font-semibold">
                     <Link to={"/apply-employer"} className="hover:border-b-1 btn">
                       Apply as an Employer
+                    </Link>
+                  </div>
+
+                  <div className="flex !text-xs !font-semibold">
+                    <Link to={"/post-job"} className="hover:border-b-1 btn">
+                      Post a job
                     </Link>
                   </div>
                 </div>

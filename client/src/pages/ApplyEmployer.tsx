@@ -1,26 +1,37 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import { useAuthContext } from "../context/AuthProvider";
 
 type EmployerApplicationForm = {
   companyName: string;
-  website: string;
   industry: string;
   companySize: string;
-  contactName: string;
   email: string;
-  phone: string;
-  about: string;
+  aboutCompany: string;
+  position: string;
+  userId: number | null | undefined;
 };
 
-const ApplyEmployer: React.FC = () => {
+const initialFormState: EmployerApplicationForm = {
+  companyName: "",
+  industry: "",
+  companySize: "",
+  email: "",
+  position: "",
+  aboutCompany: "",
+  userId: null,
+};
+
+const ApplyEmployer = () => {
+  const { auth } = useAuthContext();
+
   const [formData, setFormData] = useState<EmployerApplicationForm>({
-    companyName: '',
-    website: '',
-    industry: '',
-    companySize: '',
-    contactName: '',
-    email: '',
-    phone: '',
-    about: '',
+    companyName: "",
+    industry: "",
+    companySize: "",
+    email: "",
+    position: "",
+    aboutCompany: "",
+    userId: 0,
   });
 
   const handleChange = (
@@ -33,10 +44,31 @@ const ApplyEmployer: React.FC = () => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (
+    e: React.FormEvent<HTMLFormElement | HTMLTextAreaElement>
+  ) => {
     e.preventDefault();
-    console.log('Employer application submitted:', formData);
-    // TODO: Replace with backend integration
+    formData.userId = auth?.userId;
+    console.log("Employer application submitted:", formData);
+    try {
+      const response = await fetch(
+        "http://localhost:3000/api/apply-employeer",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify(formData),
+        }
+      );
+
+      const responseData = await response.json();
+      console.log(responseData);
+      setFormData(initialFormState);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -46,14 +78,16 @@ const ApplyEmployer: React.FC = () => {
           Employer Registration Request
         </h1>
         <p className="text-gray-600 mb-8">
-          Please fill in the details below to apply as an employer. Our team will review your
-          submission and contact you shortly.
+          Please fill in the details below to apply as an employer. Our team
+          will review your submission and contact you shortly.
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700">Company Name</label>
+              <label className="block text-sm font-medium text-gray-700">
+                Company Name
+              </label>
               <input
                 type="text"
                 name="companyName"
@@ -63,19 +97,11 @@ const ApplyEmployer: React.FC = () => {
                 className="mt-1 w-full border border-gray-300 rounded-md shadow-sm px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
+
             <div>
-              <label className="block text-sm font-medium text-gray-700">Company Website</label>
-              <input
-                type="url"
-                name="website"
-                value={formData.website}
-                onChange={handleChange}
-                className="mt-1 w-full border border-gray-300 rounded-md shadow-sm px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="https://example.com"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Industry</label>
+              <label className="block text-sm font-medium text-gray-700">
+                Industry
+              </label>
               <input
                 type="text"
                 name="industry"
@@ -85,7 +111,9 @@ const ApplyEmployer: React.FC = () => {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700">Company Size</label>
+              <label className="block text-sm font-medium text-gray-700">
+                Company Size
+              </label>
               <input
                 type="text"
                 name="companySize"
@@ -95,19 +123,11 @@ const ApplyEmployer: React.FC = () => {
                 className="mt-1 w-full border border-gray-300 rounded-md shadow-sm px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
+
             <div>
-              <label className="block text-sm font-medium text-gray-700">Contact Person</label>
-              <input
-                type="text"
-                name="contactName"
-                value={formData.contactName}
-                onChange={handleChange}
-                required
-                className="mt-1 w-full border border-gray-300 rounded-md shadow-sm px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Email</label>
+              <label className="block text-sm font-medium text-gray-700">
+                Email
+              </label>
               <input
                 type="email"
                 name="email"
@@ -117,23 +137,29 @@ const ApplyEmployer: React.FC = () => {
                 className="mt-1 w-full border border-gray-300 rounded-md shadow-sm px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">Phone</label>
-              <input
-                type="tel"
-                name="phone"
-                value={formData.phone}
-                onChange={handleChange}
-                className="mt-1 w-full border border-gray-300 rounded-md shadow-sm px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">About Your Company</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Position
+            </label>
+            <input
+              type="text"
+              name="position"
+              value={formData.position}
+              onChange={handleChange}
+              required
+              className="mt-1 w-full border border-gray-300 rounded-md shadow-sm px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              About Your Company
+            </label>
             <textarea
-              name="about"
-              value={formData.about}
+              name="aboutCompany"
+              value={formData.aboutCompany}
               onChange={handleChange}
               rows={5}
               className="mt-1 w-full border border-gray-300 rounded-md shadow-sm px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"

@@ -1,8 +1,14 @@
 import { Router } from "express";
-import { applyEmployer } from "../controllers/employer.controller.js";
+import {
+  applyEmployer,
+  fetchPendingEmployeer,
+  fetchRegisteredEmployeer,
+} from "../controllers/employer.controller.js";
 
 const router = Router();
 
-router.post("/apply-employer", applyEmployer);
+router.get("/fetch-pending-employeer", fetchPendingEmployeer);
+router.get("/fetch-registered-employeer", fetchRegisteredEmployeer);
+router.post("/apply-employeer", applyEmployer);
 
 export default router;

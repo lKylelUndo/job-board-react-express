@@ -37,7 +37,7 @@ const Navbar = () => {
           {auth?.isAdmin && (
             <div className="flex !text-xs !font-semibold">
               {/* Admin-only links */}
-              <Link to="/dashboard" className="hover:border-b-2">
+              <Link to="/dashboard" className="hover:border-b-1">
                 Dashboard
               </Link>
             </div>
@@ -46,16 +46,22 @@ const Navbar = () => {
           {auth?.isAuthenticated && (
             <>
               <div className="flex !text-xs !font-semibold">
-                <Link to={"/jobs"} className="hover:border-b-2">
+                <Link to={"/jobs"} className="hover:border-b-1 btn">
                   Job search
                 </Link>
               </div>
 
               {!auth?.isAdmin && (
-                <div className="flex !text-xs !font-semibold">
+                <div className="flex gap-x-4 !text-xs !font-semibold">
                   <div className="flex !text-xs !font-semibold">
-                    <Link to={"/profile/me"} className="hover:border-b-2">
+                    <Link to={"/profile/me"} className="hover:border-b-1 btn">
                       Profile
+                    </Link>
+                  </div>
+
+                   <div className="flex !text-xs !font-semibold">
+                    <Link to={"/apply-employer"} className="hover:border-b-1 btn">
+                      Apply as an Employer
                     </Link>
                   </div>
                 </div>

@@ -13,6 +13,7 @@ const ProtectedRoutes = () => {
     "/profile/me",
     "/jobs",
     "/view-applied-jobs",
+    "/apply-employer",
   ];
 
   useEffect(() => {

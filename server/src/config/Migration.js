@@ -3,6 +3,7 @@ import "../models/Associations.js";
 import { User } from "../models/User.js";
 import { Job } from "../models/Job.js";
 import { Application } from "../models/Application.js";
+import { Employeer } from "../models/Employeer.js";
 
 import { db } from "./Database.js";
 

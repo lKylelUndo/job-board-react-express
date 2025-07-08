@@ -88,7 +88,7 @@ const Login = () => {
     <div className="h-lvh w-96 sm:w-3/4 mt-2 mx-auto flex justify-center p-3 pt-20">
       <div
         className={`md:w-3/5 w-96 max-h-[380px] ${
-          Object.keys(errors).length > 0 && "min-h-[420px]"
+          Object.keys(errors).length > 0 && "min-h-[450px]"
         }  border-2 rounded-lg shadow border-gray-200 p-5`}
       >
         <h1 className="text-3xl font-bold">Sign In</h1>
@@ -103,7 +103,11 @@ const Login = () => {
               name="email"
               className="border border-gray-300 rounded p-3 focus:outline text-[#051c34]"
             />
-            {errors.email && <p className="!text-red-700">{errors.email}</p>}
+            {errors.email && (
+              <div role="alert" className="alert alert-error alert-soft mt-3">
+                <span>{errors.email}</span>
+              </div>
+            )}
           </div>
 
           <div className="flex flex-col mt-6">
@@ -117,7 +121,9 @@ const Login = () => {
               className="border border-gray-300 rounded p-3 focus:outline text-[#051c34]"
             />
             {errors.password && (
-              <p className="!text-red-700">{errors.password}</p>
+              <div role="alert" className="alert alert-error alert-soft mt-3">
+                <span>{errors.password}</span>
+              </div>
             )}
           </div>
           <div className="mt-3">

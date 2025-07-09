@@ -22,10 +22,5 @@ Application.belongsTo(User, {
   foreignKey: "userId",
 });
 
-User.hasOne(Employeer, {
-  foreignKey: "userId",
-});
-
-Employeer.belongsTo(User, {
-  foreignKey: "userId",
-});
+Employeer.belongsTo(User, { as: "applicant", foreignKey: "userId" });
+User.hasMany(Employeer, { as: "applications", foreignKey: "userId" });

@@ -2,17 +2,28 @@ import React, { useEffect, useState } from "react";
 import Sidebar from "../components/Sidebar";
 import { useAuthContext } from "../context/AuthProvider";
 
+// type User = {
+//   id: number;
+//   username: string;
+//   email: string;
+// };
+
 type Employeer = {
   id: number;
   userId: number;
   position: string;
   companyName: string;
   aboutCompany: string;
-  // Add other fields if needed
+  createdAt: string;
+  updatedAt?: string;
+  user: {
+    id: number;
+    username: string;
+    email: string;
+  };
 };
 
 const EmployeerApplicationPage = () => {
-  const { auth } = useAuthContext();
   const [employeers, setEmployeers] = useState<Employeer[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredEmployeer, setFilteredEmployeer] = useState<Employeer[]>([]);
@@ -39,12 +50,24 @@ const EmployeerApplicationPage = () => {
     fetchPendingEmployeer();
   }, []);
 
-  useEffect(() => {}, [searchTerm, filteredEmployeer]);
+  useEffect(() => {
+    const lowercasedTerm = searchTerm.toLowerCase();
+
+    const filtered = employeers.filter((employeer) => {
+      return (
+        employeer.user.username.toLowerCase().includes(lowercasedTerm) ||
+        employeer.user.email.toLowerCase().includes(lowercasedTerm) ||
+        employeer.user.id.toString().includes(lowercasedTerm)
+      );
+    });
+
+    setFilteredEmployeer(filtered);
+  }, [searchTerm, employeers]);
 
   return (
     <div className="flex h-screen bg-gray-100">
       <Sidebar />
-      {/* <div className="flex-1 p-6 overflow-y-auto">
+      <div className="flex-1 p-6 overflow-y-auto">
         <h1 className="text-2xl font-semibold mb-4">Pending Employeers</h1>
 
         <input
@@ -54,26 +77,33 @@ const EmployeerApplicationPage = () => {
           onChange={(e) => setSearchTerm(e.target.value)}
           className="mb-4 p-2 border border-gray-300 rounded w-full max-w-md"
         />
+
         <div className="overflow-x-auto bg-white rounded-lg shadow">
           <table className="min-w-full table-auto">
             <thead className="bg-gray-200 text-gray-700">
               <tr>
                 <th className="px-4 py-2 text-left">ID</th>
-                <th className="px-4 py-2 text-left">User ID</th>
+                <th className="px-4 py-2 text-left">Username</th>
+                <th className="px-4 py-2 text-left">Email</th>
                 <th className="px-4 py-2 text-left">Position</th>
-                <th className="px-4 py-2 text-left">Company Name</th>
-                <th className="px-4 py-2 text-left">About Company</th>
+                <th className="px-4 py-2 text-left">Created At</th>
               </tr>
             </thead>
             <tbody>
-              {employeers.length > 0 ? (
-                employeers.map((employeer) => (
+              {filteredEmployeer.length > 0 ? (
+                filteredEmployeer.map((employeer) => (
                   <tr key={employeer.id} className="border-t">
                     <td className="px-4 py-2">{employeer.id}</td>
-                    <td className="px-4 py-2">{employeer.userId}</td>
+                    <td className="px-4 py-2">
+                      {employeer.user?.username || "N/A"}
+                    </td>
+                    <td className="px-4 py-2">
+                      {employeer.user?.email || "N/A"}
+                    </td>
                     <td className="px-4 py-2">{employeer.position}</td>
-                    <td className="px-4 py-2">{employeer.companyName}</td>
-                    <td className="px-4 py-2">{employeer.aboutCompany}</td>
+                    <td className="px-4 py-2">
+                      {new Date(employeer.createdAt).toLocaleString()}
+                    </td>
                   </tr>
                 ))
               ) : (
@@ -89,7 +119,7 @@ const EmployeerApplicationPage = () => {
             </tbody>
           </table>
         </div>
-      </div> */}
+      </div>
     </div>
   );
 };

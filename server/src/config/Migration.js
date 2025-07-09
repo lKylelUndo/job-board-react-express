@@ -11,7 +11,7 @@ const sequelize = db.getSequelizeInstance();
 
 const migrate = async () => {
   try {
-    await User.sync({ alter: true });
+    await sequelize.sync({ alter: true });
     console.log(`All tables have been created or truncated.`);
     console.log("Employeer associations:", Object.keys(Employeer.associations));
     console.log("User associations:", Object.keys(User.associations));

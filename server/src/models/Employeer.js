@@ -1,4 +1,5 @@
 import { DataTypes } from "sequelize";
+import { User } from "./User.js";
 import { db } from "../config/Database.js";
 
 const sequelize = db.getSequelizeInstance();
@@ -10,7 +11,7 @@ export const Employeer = sequelize.define(
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: "users",
+        model: User,
         key: "id",
       },
     },

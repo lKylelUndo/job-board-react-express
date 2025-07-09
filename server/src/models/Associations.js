@@ -2,6 +2,7 @@ import { User } from "./User.js";
 import { Job } from "./Job.js";
 import { Profile } from "./Profile.js";
 import { Application } from "./Application.js";
+import { Employeer } from "./Employeer.js";
 
 User.hasOne(Profile, {
   foreignKey: "userId",
@@ -18,5 +19,13 @@ User.hasMany(Application, {
 });
 
 Application.belongsTo(User, {
+  foreignKey: "userId",
+});
+
+User.hasOne(Employeer, {
+  foreignKey: "userId",
+});
+
+Employeer.belongsTo(User, {
   foreignKey: "userId",
 });

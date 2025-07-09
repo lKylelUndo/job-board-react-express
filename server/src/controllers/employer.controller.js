@@ -1,4 +1,5 @@
 import { Employeer } from "../models/Employeer.js";
+import { User } from "../models/User.js";
 
 export const fetchPendingEmployeer = async (req, res) => {
   try {
@@ -6,17 +7,14 @@ export const fetchPendingEmployeer = async (req, res) => {
       where: { isRegistered: false },
     });
 
-    if (!employeers)
-      return res
-        .status(400)
-        .json({ message: "No registered employeers at the moment" });
-
-    console.log("Pending Employers:", employeers);
+    if (!employeers || employeers.length === 0) {
+      return res.status(404).json({ message: "No pending employeers found." });
+    }
 
     return res.status(200).json({ employeers });
   } catch (error) {
-    console.log(error);
-    return res.status(500).json({ error });
+    console.error("Error in fetchPendingEmployeer:", error);
+    return res.status(500).json({ error: error.message });
   }
 };
 

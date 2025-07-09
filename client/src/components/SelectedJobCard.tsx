@@ -25,7 +25,7 @@ const SelectedJobCard = ({ selectedJob }: SelectedJobProps) => {
       const updatedJob = { ...restJob, userId: auth?.userId };
 
       const result = await applyJob(updatedJob);
-      
+
       if (!result) throw new Error("Failed to apply");
 
       const { response, responseData } = result;
@@ -50,7 +50,7 @@ const SelectedJobCard = ({ selectedJob }: SelectedJobProps) => {
             {selectedJob.jobDescription}
           </p>
           <p className="text-sm mt-4 text-gray-500">{selectedJob.jobPosted}</p>
-          {auth?.isAuthenticated && (
+          {auth?.isAuthenticated && !auth?.isAdmin && (
             <button
               onClick={() => handleApply(selectedJob)}
               className="btn btn-info"

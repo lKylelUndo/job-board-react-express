@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "../components/Sidebar";
+import { useAuthContext } from "../context/AuthProvider";
 
 type Employeer = {
   id: number;
@@ -11,6 +12,7 @@ type Employeer = {
 };
 
 const EmployeerApplicationPage = () => {
+  const { auth } = useAuthContext();
   const [employeers, setEmployeers] = useState<Employeer[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredEmployeer, setFilteredEmployeer] = useState<Employeer[]>([]);
@@ -19,7 +21,7 @@ const EmployeerApplicationPage = () => {
     async function fetchPendingEmployeer() {
       try {
         const response = await fetch(
-          "http://localhost:3000/api/fetch-pending-employeer",
+          `http://localhost:3000/api/fetch-pending-employeer-with-user`,
           {
             method: "GET",
             credentials: "include",
@@ -28,7 +30,6 @@ const EmployeerApplicationPage = () => {
 
         const responseData = await response.json();
         console.log(responseData);
-        // Assuming your response shape is { employeers: [...] }
         setEmployeers(responseData.employeers || []);
       } catch (error) {
         console.error(error);

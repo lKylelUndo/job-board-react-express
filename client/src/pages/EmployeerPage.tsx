@@ -3,9 +3,13 @@ import Sidebar from "../components/Sidebar";
 
 type Employer = {
   id: number;
-  username: string;
-  email: string;
+  username?: string;
+  email?: string;
   createdAt?: string;
+  userId?: number;
+  position?: string;
+  companyName?: string;
+  aboutCompany?: string;
 };
 
 const EmployeerPage = () => {
@@ -27,9 +31,9 @@ const EmployeerPage = () => {
         const responseData = await response.json();
         console.log(responseData);
 
-        // Assuming responseData.employers is the array returned by the backend
-        setEmployers(responseData.employers || []);
-        setFilteredEmployers(responseData.employers || []);
+        // ✅ Fixed: using 'employeers' (as returned by the backend)
+        setEmployers(responseData.employeers || []);
+        setFilteredEmployers(responseData.employeers || []);
       } catch (error) {
         console.error("Error fetching employers:", error);
       }
@@ -43,8 +47,8 @@ const EmployeerPage = () => {
 
     const filtered = employers.filter((employer) => {
       return (
-        employer.username.toLowerCase().includes(lowercasedTerm) ||
-        employer.email.toLowerCase().includes(lowercasedTerm) ||
+        employer.username?.toLowerCase().includes(lowercasedTerm) ||
+        employer.email?.toLowerCase().includes(lowercasedTerm) ||
         employer.id.toString().includes(lowercasedTerm)
       );
     });
@@ -82,8 +86,8 @@ const EmployeerPage = () => {
                 filteredEmployers.map((employer) => (
                   <tr key={employer.id} className="border-t">
                     <td className="px-4 py-2">{employer.id}</td>
-                    <td className="px-4 py-2">{employer.username}</td>
-                    <td className="px-4 py-2">{employer.email}</td>
+                    <td className="px-4 py-2">{employer.username || "N/A"}</td>
+                    <td className="px-4 py-2">{employer.email || "N/A"}</td>
                     <td className="px-4 py-2">
                       {employer.createdAt
                         ? new Date(employer.createdAt).toLocaleString()

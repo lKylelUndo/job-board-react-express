@@ -1,9 +1,62 @@
 import { Employeer } from "../models/Employeer.js";
 import { User } from "../models/User.js";
 
+export const verifyEmployeer = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const findEmployeer = await Employeer.findOne({
+      where: {
+        userId: id,
+        isRegistered: true,
+      },
+    });
+    if (!findEmployeer)
+      return res.status(400).json({ message: "Employeer not verified." });
+
+    return res.status(200).json({ message: "Verified" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error });
+  }
+};
+
+export const deniedEmployeerApplication = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const employeer = await Employeer.destroy({ where: { userId: id } });
+    if (!empployeer)
+      return res.status(400).json({ message: "No employeer found." });
+
+    return res.status(200).json({ message: "Deleted." });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error });
+  }
+};
+
+export const acceptEmployeerApplication = async (req, res) => {
+  try {
+    const employeer = req.body;
+    employeer.isRegistered = true;
+    const { userId } = req.body;
+
+    const currentEmployeer = await Employeer.update(employeer, {
+      where: { userId },
+    });
+
+    if (!currentEmployeer)
+      return res.status(400).json({ message: "No employer found." });
+
+    return res.status(200).json({ message: "Success" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error });
+  }
+};
+
 export const fetchPendingEmployeerWithUser = async (req, res) => {
   try {
-    // Step 1: get pending employeers
     const pendingEmployeers = await Employeer.findAll({
       where: { isRegistered: false },
     });
@@ -12,19 +65,15 @@ export const fetchPendingEmployeerWithUser = async (req, res) => {
       return res.status(404).json({ message: "No pending employeers found." });
     }
 
-    // Step 2: extract user IDs
     const userIds = pendingEmployeers.map((emp) => emp.userId);
 
-    // Step 3: fetch users based on those IDs
     const users = await User.findAll({
       where: { id: userIds },
       attributes: ["id", "username", "email"],
     });
 
-    // Step 4: create a map for quick lookup
     const userMap = new Map(users.map((user) => [user.id, user]));
 
-    // Step 5: combine employeers and users manually
     const combined = pendingEmployeers.map((emp) => ({
       ...emp.toJSON(),
       user: userMap.get(emp.userId) || null,

@@ -28,25 +28,25 @@ const EmployeerApplicationPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredEmployeer, setFilteredEmployeer] = useState<Employeer[]>([]);
 
-  useEffect(() => {
-    async function fetchPendingEmployeer() {
-      try {
-        const response = await fetch(
-          `http://localhost:3000/api/fetch-pending-employeer-with-user`,
-          {
-            method: "GET",
-            credentials: "include",
-          }
-        );
+  async function fetchPendingEmployeer() {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/api/fetch-pending-employeer-with-user`,
+        {
+          method: "GET",
+          credentials: "include",
+        }
+      );
 
-        const responseData = await response.json();
-        console.log(responseData);
-        setEmployeers(responseData.employeers || []);
-      } catch (error) {
-        console.error(error);
-      }
+      const responseData = await response.json();
+      console.log(responseData);
+      setEmployeers(responseData.employeers || []);
+    } catch (error) {
+      console.error(error);
     }
+  }
 
+  useEffect(() => {
     fetchPendingEmployeer();
   }, []);
 
@@ -63,6 +63,47 @@ const EmployeerApplicationPage = () => {
 
     setFilteredEmployeer(filtered);
   }, [searchTerm, employeers]);
+
+  const handleAccept = async (employee: Employeer) => {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/api/accept-employeer`,
+        {
+          method: "PUT",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(employee),
+        }
+      );
+
+      const responseData = await response.json();
+      console.log(responseData);
+      fetchPendingEmployeer();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleDenied = async (employee: Employeer) => {
+    try {
+      console.log(employee)
+      const response = await fetch(
+        `http://localhost:3000/api/denied-employeer/${employee.userId}`,
+        {
+          method: "DELETE",
+          credentials: "include",
+        }
+      );
+
+      const responseData = await response.json();
+      console.log(responseData);
+      fetchPendingEmployeer();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="flex h-screen bg-gray-100">
@@ -87,6 +128,7 @@ const EmployeerApplicationPage = () => {
                 <th className="px-4 py-2 text-left">Email</th>
                 <th className="px-4 py-2 text-left">Position</th>
                 <th className="px-4 py-2 text-left">Created At</th>
+                <th className="px-4 py-2 text-left">Action</th>
               </tr>
             </thead>
             <tbody>
@@ -103,6 +145,20 @@ const EmployeerApplicationPage = () => {
                     <td className="px-4 py-2">{employeer.position}</td>
                     <td className="px-4 py-2">
                       {new Date(employeer.createdAt).toLocaleString()}
+                    </td>
+                    <td className="px-4 py-2 flex gap-x-3">
+                      <button
+                        className="btn btn-success"
+                        onClick={() => handleAccept(employeer)}
+                      >
+                        Accept
+                      </button>
+                      <button
+                        className="btn btn-error"
+                        onClick={() => handleDenied(employeer)}
+                      >
+                        Denied
+                      </button>
                     </td>
                   </tr>
                 ))

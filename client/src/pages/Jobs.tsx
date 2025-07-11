@@ -12,6 +12,7 @@ export type Job = {
   jobPosted: string;
   jobDescription: string;
   jobSalary: string;
+  createdAt: string;
 };
 
 const Jobs = () => {
@@ -27,12 +28,17 @@ const Jobs = () => {
           credentials: "include",
         });
         const responseData = await response.json();
-        console.log(responseData);
 
-        setJobs(responseData.jobs);
+        // Sort by `createdAt` newest first
+        const sortedJobs = responseData.jobs.sort(
+          (a: Job, b: Job) =>
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
+
+        setJobs(sortedJobs);
         setLoading(false);
       } catch (error) {
-        console.log(error);
+        console.error("Error fetching jobs:", error);
       }
     };
 
@@ -48,7 +54,10 @@ const Jobs = () => {
       </h1>
       {auth?.isAuthenticated && !auth?.isAdmin && (
         <div className="my-3">
-          <Link to={"/view-applied-jobs"} className="text-center my-3 hover:underline font-semibold">
+          <Link
+            to={"/view-applied-jobs"}
+            className="text-center my-3 hover:underline font-semibold"
+          >
             View Applied Jobs
           </Link>
         </div>

@@ -10,6 +10,7 @@ type JobCardProps = {
 const JobCard = ({ jobs }: JobCardProps) => {
   const { auth } = useAuthContext();
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
+  console.log(jobs)
 
   return (
     <div className="md:flex gap-8 w-full">

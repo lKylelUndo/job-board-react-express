@@ -19,28 +19,42 @@ const DashboardWidgets = () => {
         fetch("http://localhost:3000/api/fetch-pending-employeer"),
       ]);
 
-      const data = await Promise.all(responses.map((res) => res.json()));
-      console.log(data);
+      const data = await Promise.all(responses.map(async (res) => {
+        const json = await res.json();
+        if (!res.ok) {
+          console.error(`Error from ${res.url}:`, json.message || json.error);
+          return {};
+        }
+        return json;
+      }));
+
+      console.log("Dashboard API responses:", data);
+
+      // Safely extract data with fallbacks
+      const totalJobs = Array.isArray(data[0]?.jobs) ? data[0].jobs.length : 0;
+      const totalEmployers = Array.isArray(data[1]?.employeers) ? data[1].employeers.length : 0;
+      const totalCandidates = Array.isArray(data[2]?.candidates) ? data[2].candidates.length : 0;
+      const pendingEmployers = Array.isArray(data[3]?.employeers) ? data[3].employeers.length : 0;
 
       const widgetData: WidgetData[] = [
         {
           title: "Total Jobs",
-          value: data[0].jobs.length || 0,
+          value: totalJobs,
           color: "border-blue-500 text-blue-700",
         },
         {
           title: "Total Employers",
-          value: data[1].employeers.length || 0,
+          value: totalEmployers,
           color: "border-green-500 text-green-700",
         },
         {
           title: "Total Candidates",
-          value: data[2].candidates.length || 0,
+          value: totalCandidates,
           color: "border-purple-500 text-purple-700",
         },
         {
           title: "Pending Employeer Applications",
-          value: data[3].employeers.length || 0,
+          value: pendingEmployers,
           color: "border-yellow-500 text-yellow-700",
         },
       ];

@@ -17,6 +17,10 @@ const corsOption = {
 
 app.use(cors(corsOption));
 
+app.get("/test", (req, res) => {
+  return res.json("Hello Test");
+});
+
 // Routes
 app.use("/api", routes);
 
